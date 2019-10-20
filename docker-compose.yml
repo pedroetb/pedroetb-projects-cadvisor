@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  cadvisor:
+    image: ${IMAGE_NAME:-google/cadvisor}:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE:-Dockerfile}
+      args:
+        GOLANG_IMAGE_TAG:
+        ALPINE_IMAGE_TAG:
+        CADVISOR_VERSION:
+        GIT_VERSION:
+        LIBC6_COMPAT_VERSION:
+        DEVICE_MAPPER_VERSION:
+        FINDUTILS_VERSION:
+        THIN_PROVISIONING_TOOLS_VERSION:
+    command:
+      - --docker_only
+    networks:
+      metric-net:
+      traefik-net:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      mode: global
+      restart_policy:
+        delay: ${RESTART_DELAY:-10s}
+      update_config:
+        delay: ${UPDATE_DELAY:-1m}
+      labels:
+        traefik.http.routers.cadvisor.entrypoints: ${TRAEFIK_ENTRYPOINT:-https}
+        traefik.http.routers.cadvisor.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-default}
+        traefik.http.routers.cadvisor.rule: Host(`${TRAEFIK_SUBDOMAIN:-cadvisor}.${TRAEFIK_DOMAIN}`)
+        traefik.http.middlewares.cadvisor-auth.basicauth.users: ${TRAEFIK_AUTH}
+        traefik.http.routers.cadvisor.middlewares: cadvisor-auth
+        traefik.http.services.cadvisor.loadbalancer.server.port: ${PORT:-8080}
+      resources:
+        limits:
+          cpus: '${RESOURCES_LIMITS_CPUS:-0.5}'
+          memory: ${RESOURCES_LIMITS_MEMORY:-128M}
+        reservations:
+          cpus: '${RESOURCES_RESERVATIONS_CPUS:-0.001}'
+          memory: ${RESOURCES_RESERVATIONS_MEMORY:-32M}
+
+networks:
+  metric-net:
+    name: ${METRIC_NET_NAME:-metric-net}
+    external: true
+
+  traefik-net:
+    name: ${TRAEFIK_NET_NAME:-traefik-net}
+    external: true
