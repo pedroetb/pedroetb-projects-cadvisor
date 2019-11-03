@@ -10,5 +10,3 @@ stages:
   variables:
     STACK: metric
     SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
-  environment:
-    url: https://${CI_PROJECT_NAME}.${DD_TRAEFIK_DOMAIN}
