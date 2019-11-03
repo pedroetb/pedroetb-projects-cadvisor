@@ -19,7 +19,6 @@ services:
       - --docker_only
     networks:
       metric-net:
-      traefik-net:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/rootfs:ro
@@ -31,13 +30,6 @@ services:
         delay: ${RESTART_DELAY:-10s}
       update_config:
         delay: ${UPDATE_DELAY:-1m}
-      labels:
-        traefik.http.routers.cadvisor.entrypoints: ${TRAEFIK_ENTRYPOINT:-https}
-        traefik.http.routers.cadvisor.tls.certresolver: ${TRAEFIK_CERTRESOLVER:-default}
-        traefik.http.routers.cadvisor.rule: Host(`${TRAEFIK_SUBDOMAIN:-cadvisor}.${TRAEFIK_DOMAIN}`)
-        traefik.http.middlewares.cadvisor-auth.basicauth.users: ${TRAEFIK_AUTH}
-        traefik.http.routers.cadvisor.middlewares: cadvisor-auth
-        traefik.http.services.cadvisor.loadbalancer.server.port: ${PORT:-8080}
       resources:
         limits:
           cpus: '${RESOURCES_LIMITS_CPUS:-0.5}'
@@ -49,8 +41,4 @@ services:
 networks:
   metric-net:
     name: ${METRIC_NET_NAME:-metric-net}
-    external: true
-
-  traefik-net:
-    name: ${TRAEFIK_NET_NAME:-traefik-net}
     external: true
