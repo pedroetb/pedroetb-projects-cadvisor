@@ -43,7 +43,7 @@ COPY --from=build ${BUILD_PATH}/cadvisor /usr/bin/cadvisor
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=1m --timeout=10s \
+HEALTHCHECK --interval=1m --timeout=30s --start-period=2m --retries=10 \
 	CMD wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1
 
 ENTRYPOINT ["/usr/bin/cadvisor", "--logtostderr"]
