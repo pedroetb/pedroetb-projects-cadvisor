@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   cadvisor:
     image: ${IMAGE_NAME:-gcr.io/cadvisor/cadvisor}:${IMAGE_TAG:-latest}
@@ -17,7 +15,7 @@ services:
       restart_policy:
         delay: ${RESTART_DELAY:-10s}
       update_config:
-        delay: ${UPDATE_DELAY:-1m}
+        delay: ${UPDATE_DELAY:-0s}
       resources:
         limits:
           cpus: '${RESOURCES_LIMITS_CPUS:-0.5}'

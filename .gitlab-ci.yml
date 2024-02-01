@@ -1,7 +1,10 @@
 include:
   - project: 'pedroetb-projects/gitlab-ci-templates'
     ref: master
-    file: '/deployment.yml'
+    file: '/deployment-service/lulu/docker-deploy.yml'
+  - project: 'pedroetb-projects/gitlab-ci-templates'
+    ref: master
+    file: '/deployment-service/oracle/docker-deploy.yml'
 
 stages:
   - deploy
@@ -9,4 +12,3 @@ stages:
 .deploy:
   variables:
     STACK: metric
-    SERVICES_TO_CHECK: ${STACK}_${CI_PROJECT_NAME}
