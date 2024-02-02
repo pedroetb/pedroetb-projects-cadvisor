@@ -10,10 +10,7 @@ services:
       - /sys:/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/machine-id:/etc/machine-id:ro
-      - /dev/kmsg:/dev/kmsg:ro
       - ${DOCKER_DATA_PATH}:/var/lib/docker:ro
-    cap_add:
-      - SYS_ADMIN
     deploy:
       mode: global
       restart_policy:
