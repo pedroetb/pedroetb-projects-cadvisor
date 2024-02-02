@@ -9,7 +9,9 @@ services:
       - /:/rootfs:ro
       - /sys:/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOCKER_DATA_PATH:-/var/lib/docker}:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - /dev/kmsg:ro
+      - ${DOCKER_DATA_PATH}:/var/lib/docker:ro
     deploy:
       mode: global
       restart_policy:
@@ -22,7 +24,7 @@ services:
           memory: ${RESOURCES_LIMITS_MEMORY:-128M}
         reservations:
           cpus: '${RESOURCES_RESERVATIONS_CPUS:-0.001}'
-          memory: ${RESOURCES_RESERVATIONS_MEMORY:-32M}
+          memory: ${RESOURCES_RESERVATIONS_MEMORY:-64M}
 
 networks:
   metric-net:
