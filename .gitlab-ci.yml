@@ -5,6 +5,9 @@ include:
   - project: 'pedroetb-projects/gitlab-ci-templates'
     ref: master
     file: '/deployment-service/oracle/docker-deploy.yml'
+  - project: 'pedroetb-projects/gitlab-ci-templates'
+    ref: master
+    file: '/deployment-service/museo/docker-deploy.yml'
 
 stages:
   - deploy
