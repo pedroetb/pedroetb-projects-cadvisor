@@ -3,10 +3,10 @@ services:
     image: ${IMAGE_NAME:-gcr.io/cadvisor/cadvisor}:${IMAGE_TAG:-latest}
     command:
       - --docker_only
-      - --disable_metrics="${DISABLE_METRICS}"
-      - --housekeeping_interval="${HOUSEKEEPING_INTERVAL}"
-      - --store_container_labels="${STORE_CONTAINER_LABELS}"
-      - --whitelisted_container_labels="${WHITELISTED_CONTAINER_LABELS}"
+      - --disable_metrics=${DISABLE_METRICS}
+      - --housekeeping_interval=${HOUSEKEEPING_INTERVAL}
+      - --store_container_labels=${STORE_CONTAINER_LABELS}
+      - --whitelisted_container_labels=${WHITELISTED_CONTAINER_LABELS}
     networks:
       metric-net:
     volumes:
