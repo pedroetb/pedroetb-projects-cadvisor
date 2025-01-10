@@ -3,9 +3,10 @@ services:
     image: ${IMAGE_NAME:-gcr.io/cadvisor/cadvisor}:${IMAGE_TAG:-latest}
     command:
       - --docker_only
-      - --store_container_labels=${STORE_CONTAINER_LABELS}
-      - --housekeeping_interval=${HOUSEKEEPING_INTERVAL}
-      - --disable_metrics=${DISABLE_METRICS}
+      - --disable_metrics="${DISABLE_METRICS}"
+      - --housekeeping_interval="${HOUSEKEEPING_INTERVAL}"
+      - --store_container_labels="${STORE_CONTAINER_LABELS}"
+      - --whitelisted_container_labels="${WHITELISTED_CONTAINER_LABELS}"
     networks:
       metric-net:
     volumes:
@@ -14,7 +15,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/machine-id:/etc/machine-id:ro
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_DATA_PATH}:/var/lib/docker:ro
+      - ${DOCKER_DATA_PATH:-/var/lib/docker}:/var/lib/docker:ro
     deploy:
       mode: global
       restart_policy:
